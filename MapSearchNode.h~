@@ -53,7 +53,7 @@ int MapSearchNode::GetMap( int x, int y ){
 	    return 9;	 
     }
 
-    return map[(x*MAP_HEIGHT)+y];
+    return map[(y*MAP_WIDTH)+x];
 }
 
 bool MapSearchNode::IsSameState( MapSearchNode &rhs )

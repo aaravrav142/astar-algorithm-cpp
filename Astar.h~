@@ -182,8 +182,10 @@ void Astar::printMap(){
 
     for(int i=0; i<access_map.size(); i++){
         if(i%gridSizeY == 0) printf("\n");
-        if(access_map.at(i) >=0 && access_map.at(i) <= 5) printf(". ");	
-        else if(access_map.at(i) == 9) printf("■ ");    
+        else{
+            if(access_map.at(i) >=0 && access_map.at(i) <= 5) printf(". ");	
+            else if(access_map.at(i) == 9) printf("■ ");
+        }    
     }
     cout << endl;
 }
