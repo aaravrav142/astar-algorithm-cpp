@@ -63,8 +63,6 @@ void Astar::run(int v_start, int v_target){
     
     access_map = MapSearchNode::map;
     
-    printMap();
-
     MapSearchNode nodeStart;
     nodeStart.x = start/gridSizeY;
     nodeStart.y = start%gridSizeY; 
@@ -84,11 +82,7 @@ void Astar::run(int v_start, int v_target){
     {
 	    SearchState = astarsearch.SearchStep();
 
-	    //SearchSteps++;
-
 #if DEBUG_LISTS
-
-	    //cout << "Steps:" << SearchSteps << "\n";
 
 	    int len = 0;
 

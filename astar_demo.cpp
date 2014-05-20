@@ -56,6 +56,8 @@ int main( int argc, char *argv[] )
     Astar myAstar(access_map, 20, 20);
     
     myAstar.run(43,380);
+    
+    myAstar.run(380,43);
 	
 
     return 0;
