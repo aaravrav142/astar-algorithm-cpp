@@ -8,7 +8,7 @@
 
 #define DEBUG_LISTS 0
 #define DEBUG_LIST_LENGTHS_ONLY 0
-#define DISPLAY_SOLUTION 1
+#define DISPLAY_SOLUTION 0
 
 /*******************   NOTES ON THE INPUT MAP   **************************
 
@@ -70,9 +70,9 @@ void Astar::run(int v_start, int v_target){
     MapSearchNode nodeEnd;
     nodeEnd.x = target/gridSizeY;						
     nodeEnd.y = target%gridSizeY;
-
+#if DISPLAY_SOLUTION   
     cout << "Start: " << start << "\tTarget: " << target << endl;
-
+#endif
     // Set Start and goal states
     astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
 
@@ -120,8 +120,9 @@ void Astar::run(int v_start, int v_target){
 
     if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED )
     {
+#if DISPLAY_SOLUTION    
 	    cout << "A path was found!\n";
-
+#endif
 	    MapSearchNode *node = astarsearch.GetSolutionStart();
 	    
 	    /// Saving solution in astarPath vector
@@ -151,7 +152,7 @@ void Astar::run(int v_start, int v_target){
 
 void Astar::printSolution(){
 
-    cout << "Displaying solution (path length=" << astarPath.size() << "):" << endl;		    
+    cout << "Path from " << start << " to " << target << " (path length=" << astarPath.size() << "):" << endl;		    
 
     for(int i=0; i<astarPath.size(); i++){
         cout << astarPath.at(i) << " ";	    

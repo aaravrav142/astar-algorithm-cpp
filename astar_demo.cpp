@@ -5,9 +5,6 @@
 #include <MapSearchNode.h>
 #include <Astar.h>
 
-#define DEBUG_LISTS 0
-#define DEBUG_LIST_LENGTHS_ONLY 0
-#define DISPLAY_SOLUTION 1
 
 /*******************   NOTES ON THE INPUT MAP   **************************
 
@@ -49,15 +46,25 @@ int aMap[] = {
 int main( int argc, char *argv[] )
 {
 
-    int start, target;
-    
     std::vector<int> access_map(aMap, aMap + sizeof(aMap)/sizeof(int));
+    std::vector<int> solutionPath;
     
     Astar myAstar(access_map, 20, 20);
     
-    myAstar.run(43,380);
+    //First run, printing solution using the Astar method
+    myAstar.run(43,380);   
+    myAstar.printSolution();  
+    cout << endl;
     
-    myAstar.run(380,43);
+    //Second run, printing solution by getting the path
+    myAstar.run(380,43);   
+    solutionPath = myAstar.astarPath;  
+    cout << "Path from 380 to 43:" << endl;    
+    for(int i=0; i<solutionPath.size();i++){
+        cout << " " << solutionPath.at(i);  
+    }
+    cout << endl;
+   
 	
 
     return 0;
