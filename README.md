@@ -32,7 +32,27 @@ This implementation is intended to be simple to read yet fairly
 efficient. To build it you can compile, with any recent C++ compiler,
 the following files :
 
-1. **For 8-puzzle solver**
+1. **For path finder**
+
+* astar_demo.cpp
+* Astar.h
+* MapSearchNode.h
+* stlastar.h
+* optionally fsa.h
+
+To compile using g++:
+
+    g++ astar_demo.cpp -o astar_demo -I ./
+
+You can edit the simple map and the start and goal coordinates in astar_demo to experiement with the A* pathfinder algorithm.
+
+Fixed size allocator notes: As mentioned briefly in the tutorial you can enable and disable the
+faster memory allocation. This allocates a fixed size block of memory, so you have to specify this size
+with the astar constructor. You need to enlarge it if you hit an out of memory assert during the
+search.
+
+
+2. **For 8-puzzle solver**
 
 * 8puzzle.cpp
 * stlastar.h
@@ -44,21 +64,6 @@ prefer pass in a board on the command line using digits for the tile positions, 
 zero is the space. The board runs from left to right, each row at a time:
 	
     8puzzle 013824765
-
-2. **For path finder**
-
-* astar_demo.cpp
-* Astar.h
-* MapSearchNode.h
-* stlastar.h
-* optionally fsa.h
-
-You can edit the simple map and the start and goal coordinates in astar_demo to experiement with the A* pathfinder algorithm.
-
-Fixed size allocator notes: As mentioned briefly in the tutorial you can enable and disable the
-faster memory allocation. This allocates a fixed size block of memory, so you have to specify this size
-with the astar constructor. You need to enlarge it if you hit an out of memory assert during the
-search.
 
 
 License
