@@ -16,7 +16,7 @@ The following repo is a fork adapted to be more modular and easier to integrate 
 
 4. Now the solution found is graphically displayed on the terminal to better visualize the solution! :)
 
-![My image](github.com/merosss/astar-algorithm-cpp/img/image.jpg)
+![My image](github.com/merosss/astar-algorithm-cpp/img/astar_printSolution.png)
 
 License
 =======
