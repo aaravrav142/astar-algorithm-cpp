@@ -6,9 +6,15 @@ Summary
 
 This code is an efficient implementation in C++ of the A* algorithm. It accompanies the A* tutorial on this site: http://www.heyes-jones.com/astar.html
 
-The following repo is a fork adapted to be more modular and easier to integrate in your own project. The major differences are:
+The following repo is a fork adapted to be more modular and easier to integrate in your own project.
 
-1. **MapSearchNode** class was separated from the main file and the "old global variables" are now static members.
+
+Code Details
+------------
+
+The major differences from the original version are:
+
+1. **MapSearchNode** class was separated from the main file and the "old global variables" are now static members, also GetMap is now using a *row-major order* logic for the matrix.
 
 2. An interface class was defined for the *stlastar* class, named **Astar**, with a main method called **run**. The class can be instantiated just once and to find the shortest path between different *start*-*target* couples just use the *run* method again and again, taking care of saving each time the generated path (the *astarPath* public member).
 
@@ -18,14 +24,9 @@ The following repo is a fork adapted to be more modular and easier to integrate 
 
 ![printedSolution](img/astar_printSolution.png)
 
-License
-=======
 
-This software is released under the MIT License, see license.txt
-
-
-Introduction
-============
+Structure and usage
+-------------------
 
 This implementation is intended to be simple to read yet fairly
 efficient. To build it you can compile, with any recent C++ compiler,
@@ -58,3 +59,9 @@ Fixed size allocator notes: As mentioned briefly in the tutorial you can enable 
 faster memory allocation. This allocates a fixed size block of memory, so you have to specify this size
 with the astar constructor. You need to enlarge it if you hit an out of memory assert during the
 search.
+
+
+License
+=======
+
+This software is released under the MIT License, see license.txt
