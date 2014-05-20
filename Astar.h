@@ -1,9 +1,8 @@
-
-#include "stlastar.h" // See header for copyright and usage information
-#include <iostream>
 #ifndef ASTAR_H_
 #define ASTAR_H_
 
+#include "stlastar.h" // See header for copyright and usage information
+#include <iostream>
 #include <stdio.h>
 #include <MapSearchNode.h>
 
@@ -100,8 +99,7 @@ void Astar::run(int v_start, int v_target){
 #if !DEBUG_LIST_LENGTHS_ONLY			
 		    ((MapSearchNode *)p)->PrintNodeInfo();
 #endif
-		    p = astarsearch.GetOpenListNext();
-		
+		    p = astarsearch.GetOpenListNext();	
 	    }
 
 	    cout << "Open list has " << len << " nodes\n";

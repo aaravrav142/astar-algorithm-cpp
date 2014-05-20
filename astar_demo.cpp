@@ -9,6 +9,15 @@
 #define DEBUG_LIST_LENGTHS_ONLY 0
 #define DISPLAY_SOLUTION 1
 
+/*******************   NOTES ON THE INPUT MAP   **************************
+
+   Each element contains an integer from 0 to 5 which indicates the cost 
+   of travel across the terrain. Zero means the least possible difficulty 
+   in travelling (think ice rink if you can skate) whilst 5 represents the 
+   most difficult. 9 indicates that we cannot pass.
+
+**************************************************************************/
+
 int aMap[] = {
 
 //  0   2   4   6   8  10  12  14  16  18
@@ -36,18 +45,9 @@ int aMap[] = {
 
 };
 
-//std::vector<int> MapSearchNode::map(aMap, aMap + sizeof(aMap)/sizeof(int));
-//MapSearchNode::MAP_WIDTH;
-//MapSearchNode::MAP_HEIGHT;
-
 
 int main( int argc, char *argv[] )
 {
-	// Our sample problem defines the world as a 2d array representing a terrain
-	// Each element contains an integer from 0 to 5 which indicates the cost 
-	// of travel across the terrain. Zero means the least possible difficulty 
-	// in travelling (think ice rink if you can skate) whilst 5 represents the 
-	// most difficult. 9 indicates that we cannot pass.
 
 	int WIDTH = 20;
     int HEIGHT = 20;
@@ -60,13 +60,9 @@ int main( int argc, char *argv[] )
     
     Astar myAstar(access_map, 20, 20);
     
-    myAstar.run(0,399);
-    
-    myAstar.run(25,256);
-    
-    myAstar.run(135,222);
-    
-    myAstar.run(320,76);
+    myAstar.run(380, 84);
+    myAstar.run(380,103);
+    myAstar.run(380,104);
 	
 
     return 0;

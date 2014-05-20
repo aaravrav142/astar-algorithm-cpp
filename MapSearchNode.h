@@ -6,11 +6,6 @@
 #include <stdio.h>
 #include <vector>
 
-// The world map
-
-//const int MAP_WIDTH = 20;
-//const int MAP_HEIGHT = 20;
-
 
 using namespace std;
 
@@ -25,15 +20,11 @@ public:
 	
 	MapSearchNode() {
 	    x = y = 0;
-	    MAP_WIDTH = 20;
-        MAP_HEIGHT = 20;
 	    
 	}
 	
 	MapSearchNode( int px, int py ) {
 	    x=px; y=py;
-	    MAP_WIDTH = 20;
-        MAP_HEIGHT = 20;
 	}
 
 private:
@@ -49,12 +40,7 @@ public:
 	void PrintNodeInfo(); 
 	
 };
-/*
-void MapSearchNode::loadMap(std::vector<int> access_map){
-    
-    map = access_map;
-}
-*/
+
 
 int MapSearchNode::GetMap( int x, int y ){
     if( x < 0 ||
