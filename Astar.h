@@ -6,9 +6,6 @@
 #include <stdio.h>
 #include <MapSearchNode.h>
 
-#define DEBUG_LISTS 0
-#define DEBUG_LIST_LENGTHS_ONLY 0
-#define DISPLAY_SOLUTION 0
 
 /*******************   NOTES ON THE INPUT MAP   **************************
 
@@ -17,170 +14,133 @@
    in travelling (think ice rink if you can skate) whilst 5 represents the 
    most difficult. 9 indicates that we cannot pass.
 
-**************************************************************************/
+ **************************************************************************/
 
 std::vector<int> MapSearchNode::map;
 int MapSearchNode::MAP_WIDTH;
 int MapSearchNode::MAP_HEIGHT;
-    
+
 
 class Astar
 {
 
-    int gridSizeX;	
-	int gridSizeY;
+  int gridSizeX;
+  int gridSizeY;
 
-    AStarSearch<MapSearchNode> astarsearch;
-    std::vector<int> access_map;
-    int start, target;
-    
+  AStarSearch<MapSearchNode> astarsearch;
+  std::vector<int> access_map;
+  int start, target;
+
 public:
-    Astar() {}
-    Astar(std::vector<int> a_map, int sizeX, int sizeY):
-        
-        gridSizeX(sizeX),
-        gridSizeY(sizeY)     
-    {
-        MapSearchNode::map = a_map;
-        MapSearchNode::MAP_WIDTH = sizeX;
-        MapSearchNode::MAP_HEIGHT = sizeY;
-    }
-    
-    std::vector<int> astarPath;
-    void run(int v_start, int v_target);
-    void printMap();
-    void printSolution();
+  Astar():
+    gridSizeX(0),
+    gridSizeY(0),
+    start(0),
+    target(0)
+{ }
+  Astar(std::vector<int> a_map, int sizeX, int sizeY):
+    access_map(a_map),
+    gridSizeX(sizeX),
+    gridSizeY(sizeY),
+    start(0),
+    target(0)
+  {
+    MapSearchNode::map = a_map;
+    MapSearchNode::MAP_WIDTH = sizeX;
+    MapSearchNode::MAP_HEIGHT = sizeY;
+  }
+  virtual ~Astar(){}
+
+  std::vector<int> path;
+  void run(int v_start, int v_target);
+  void printMap();
+  void printSolution();
 
 };
 
 
-    
+
 void Astar::run(int v_start, int v_target){
-    
-    start = v_start;
-    target = v_target;
-    astarPath.clear();
-    
-    access_map = MapSearchNode::map;
-    
-    MapSearchNode nodeStart;
-    nodeStart.x = start/gridSizeY;
-    nodeStart.y = start%gridSizeY; 
 
-    MapSearchNode nodeEnd;
-    nodeEnd.x = target/gridSizeY;						
-    nodeEnd.y = target%gridSizeY;
-#if DISPLAY_SOLUTION   
-    cout << "Start: " << start << "\tTarget: " << target << endl;
-#endif
-    // Set Start and goal states
-    astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
+  start = v_start;
+  target = v_target;
+  path.clear();
 
-    unsigned int SearchState;
+  MapSearchNode nodeStart;
+  nodeStart.x = start/gridSizeY;
+  nodeStart.y = start%gridSizeY;
 
-    do
-    {
-	    SearchState = astarsearch.SearchStep();
+  MapSearchNode nodeEnd;
+  nodeEnd.x = target/gridSizeY;
+  nodeEnd.y = target%gridSizeY;
 
-#if DEBUG_LISTS
+  // Set Start and goal states
+  astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
 
-	    int len = 0;
+  unsigned int SearchState;
 
-	    cout << "Open:\n";
-	    MapSearchNode *p = astarsearch.GetOpenListStart();
-	    while( p )
-	    {
-		    len++;
-#if !DEBUG_LIST_LENGTHS_ONLY			
-		    ((MapSearchNode *)p)->PrintNodeInfo();
-#endif
-		    p = astarsearch.GetOpenListNext();	
-	    }
+  do{
+    SearchState = astarsearch.SearchStep();
+  }
+  while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
 
-	    cout << "Open list has " << len << " nodes\n";
+  if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED )
+  {
 
-	    len = 0;
+    MapSearchNode *node = astarsearch.GetSolutionStart();
 
-	    cout << "Closed:\n";
-	    p = astarsearch.GetClosedListStart();
-	    while( p )
-	    {
-		    len++;
-#if !DEBUG_LIST_LENGTHS_ONLY			
-		    p->PrintNodeInfo();
-#endif			
-		    p = astarsearch.GetClosedListNext();
-	    }
+    /// Saving solution in path vector
+    do{
+      path.push_back(node->x * gridSizeY+node->y);
+      access_map.at(node->x * gridSizeY+node->y) = -1;
+      node = astarsearch.GetSolutionNext();
 
-	    cout << "Closed list has " << len << " nodes\n";
-#endif
+    }while( node != NULL );
 
-    }
-    while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
+    // Once you're done with the solution you can free the nodes up
+    astarsearch.FreeSolutionNodes();
 
-    if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED )
-    {
-#if DISPLAY_SOLUTION    
-	    cout << "A path was found!\n";
-#endif
-	    MapSearchNode *node = astarsearch.GetSolutionStart();
-	    
-	    /// Saving solution in astarPath vector
-	    do{
-		    astarPath.push_back(node->x * gridSizeY+node->y);
-		    access_map.at(node->x * gridSizeY+node->y) = -1;
-		    node = astarsearch.GetSolutionNext();    
-	
-	    }while( node != NULL );
-	    
-#if DISPLAY_SOLUTION
-        printSolution();
-#endif
-	    
-	    // Once you're done with the solution you can free the nodes up
-	    astarsearch.FreeSolutionNodes();
+  }
+  else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED )
+  {
+    cout << "Search terminated. No traversable path found.\n";
+  }
 
-    }
-    else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) 
-    {
-	    cout << "Search terminated. No traversable path found.\n";
-    }
-    
-    astarsearch.EnsureMemoryFreed();
+  //astarsearch.EnsureMemoryFreed();
 
 }
 
 void Astar::printSolution(){
 
-    cout << "Path from " << start << " to " << target << " (path length=" << astarPath.size() << "):" << endl;		    
+  cout << "Path from " << start << " to " << target << " (path length=" << path.size() << "):" << endl;
 
-    for(int i=0; i<astarPath.size(); i++){
-        cout << astarPath.at(i) << " ";	    
-    }
-    cout << endl;
+  for(int i=0; i<path.size(); i++){
+    cout << path.at(i) << " ";
+  }
+  cout << endl;
 
-    for(int i=0; i<access_map.size(); i++){
-        if(i%gridSizeY == 0) printf("\n");
-        if(i == start) printf("S ");
-        else if(i == target) printf("T ");
-        else if(access_map.at(i) >=0 && access_map.at(i) <= 5) printf(". ");	
-        else if(access_map.at(i) == 9) printf("■ ");
-        else if(access_map.at(i) == -1) printf("X ");
-	    
-    }
-    cout << endl;
+  for(int i=0; i<access_map.size(); i++){
+    if(i%gridSizeY == 0) printf("\n");
+    if(i == start) printf("S ");
+    else if(i == target) printf("T ");
+    else if(access_map.at(i) >=0 && access_map.at(i) <= 5) printf(". ");
+    else if(access_map.at(i) == 9) printf("■ ");
+    else if(access_map.at(i) == -1) printf("X ");
+
+  }
+  cout << endl;
 }
 
 void Astar::printMap(){
 
-    cout << "Map:" << endl;
+  cout << "Map:";
 
-    for(int i=0; i<access_map.size(); i++){
-        if(i%gridSizeY == 0) printf("\n");
-        if(access_map.at(i) >=0 && access_map.at(i) <= 5) printf(". ");	
-        else if(access_map.at(i) == 9) printf("■ ");    
-    }
-    cout << endl;
+  for(int i=0; i<access_map.size(); i++){
+    if(i%gridSizeY == 0) printf("\n");
+    if(access_map.at(i) >=0 && access_map.at(i) <= 5) printf(". ");
+    else if(access_map.at(i) == 9) printf("■ ");
+  }
+  cout << endl;
 }
 
 #endif

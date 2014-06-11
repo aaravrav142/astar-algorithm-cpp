@@ -2,7 +2,6 @@
 #include "stlastar.h" // See header for copyright and usage information
 #include <iostream>
 #include <stdio.h>
-#include <MapSearchNode.h>
 #include <Astar.h>
 
 
@@ -52,14 +51,15 @@ int main( int argc, char *argv[] )
     Astar myAstar(access_map, 20, 20);
     
     //First run, printing solution using the Astar method
-    myAstar.run(43,380);   
+    myAstar.run(43,380);
+    cout << "[Using class method] ";
     myAstar.printSolution();  
     cout << endl;
     
     //Second run, printing solution by getting the path
     myAstar.run(380,43);   
-    solutionPath = myAstar.astarPath;  
-    cout << "Path from 380 to 43:" << endl;    
+    solutionPath = myAstar.path;  
+    cout << "[Getting Path] Path from 380 to 43:" << endl;    
     for(int i=0; i<solutionPath.size();i++){
         cout << " " << solutionPath.at(i);  
     }
